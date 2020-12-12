@@ -16,7 +16,7 @@ app.get("/findColleges",async(req,res)=>{
     const city= req.query.city;
     const course=req.query.course;
     const exams=req.query.exams;
-    let findClg="";
+    let findClg= await connection.find();
     if(!isNullOrUndefined(name)){
     let regex = new RegExp(name, 'i')
     findClg= await connection.find({name: {$regex: regex}});
