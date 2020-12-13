@@ -18,7 +18,7 @@ app.get("/findColleges",async(req,res)=>{
     const exams=req.query.exams;
     const minPackage=req.query.minPackage;
     const maxFees=req.query.maxFees;
-    let findClg="";
+    let findClg=await connection.find();
     if(!isNullOrUndefined(name)){
     // let regex = new RegExp(name, 'i')
     findClg= await connection.find({name: {$regex: name, $options: "i"}});
@@ -37,11 +37,11 @@ app.get("/findColleges",async(req,res)=>{
     }
     if(!isNullOrUndefined(minPackage)){
     const data=await connection.find();
-    findClg=data.filter((d)=>d.minPackage>=10.5);
+    findClg=data.filter((d)=>d.minPackage>=minPackage);
     }
     if(!isNullOrUndefined(maxFees)){
         const data=await connection.find();
-        findClg=data.filter((d)=>d.maxFees<=10);
+        findClg=data.filter((d)=>d.maxFees<=maxFees);
     }
     res.send(findClg);
 });
