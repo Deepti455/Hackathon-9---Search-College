@@ -16,26 +16,35 @@ app.get("/findColleges",async(req,res)=>{
     const city= req.query.city;
     const course=req.query.course;
     const exams=req.query.exams;
-    let findClg= await connection.find();
+    const minPackage=req.query.minPackage;
+    const maxFees=req.query.maxFees;
+    let findClg="";
     if(!isNullOrUndefined(name)){
-    let regex = new RegExp(name, 'i')
-    findClg= await connection.find({name: {$regex: regex}});
+    // let regex = new RegExp(name, 'i')
+    findClg= await connection.find({name: {$regex: name, $options: "i"}});
     }
     if(!isNullOrUndefined(state)){
     let regex = new RegExp(state, 'i')
-    findClg= await connection.find({state: {$regex: regex}});
+    findClg= await connection.find({state: {$regex: state, $options: "i"}});
     }
     if(!isNullOrUndefined(city)){
     let regex = new RegExp(city, 'i')
-    findClg= await connection.find({city: {$regex: regex}});
+    findClg= await connection.find({city: {$regex: city, $options: "i"}});
     }
     if(!isNullOrUndefined(course)){
-    let regex = new RegExp(course, 'i')
-    findClg= await connection.find({course: {$regex: regex}});
+    const regex=`^${course}$`
+    findClg= await connection.find({course: {$regex: regex, $options: "i"}});
     }
-    
+    if(!isNullOrUndefined(minPackage)){
+    const data=await connection.find();
+    findClg=data.filter((d)=>d.minPackage>=10.5);
+    }
+    if(!isNullOrUndefined(maxFees)){
+        const data=await connection.find();
+        findClg=data.filter((d)=>d.maxFees<=10);
+    }
     res.send(findClg);
-})
+});
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
