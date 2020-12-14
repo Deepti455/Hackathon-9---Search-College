@@ -9,12 +9,12 @@ app.use(express.json());
 const { connections } = require('mongoose');
 const {connection} = require('./connector');
 
-// const isNullOrUndefined = val=> val===null || val===undefined;
+const isNullOrUndefined = val=> val===null || val===undefined;
 app.get("/findColleges",async(req,res)=>{
     const {name,city,state,exam,course}= req.query;
     
-    const minPackage=(req.query.minPackage&&!isNaN(req.query.minPackage)? parseInt(req.query.minPackage): 0);
-    const maxFees=(req.query.maxFees&&!isNaN(req.query.maxFees)? parseInt(req.query.maxFees): 0);
+    const minPackage=(req.query.minPackage && !isNullOrUndefined(req.query.minPackage)? parseInt(req.query.minPackage): 0);
+    const maxFees=(req.query.maxFees && !isNullOrUndefined(req.query.maxFees)? parseInt(req.query.maxFees): 1000);
     
     const data= await connection.find({
         "name": new RegExp(name,"i"),
