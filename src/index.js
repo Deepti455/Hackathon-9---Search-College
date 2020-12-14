@@ -20,13 +20,13 @@ app.get("/findColleges",async(req,res)=>{
     const maxFees=(req.query.maxFees&&!isNaN(req.query.maxFees)? parseInt(req.query.maxFees): 0);
     
     const data= await connection.find({
-        "name": new RegExp(name,"i"),
-        "city": new RegExp(city, "i"),
-        "state": new RegExp(city,"i"),
-        "exam": new RegExp(exam, "i"),
-        "course": new RegExp(course, "i"),
-        "maxFees": {$lte: maxFees},
-        "minPackage": {$gte: minPackage}
+        name: new RegExp(name,"i"),
+        city: new RegExp(city, "i"),
+        state: new RegExp(city,"i"),
+        exam: new RegExp(exam, "i"),
+        course: new RegExp(course, "i"),
+        maxFees: {$lte: maxFees},
+        minPackage: {$gte: minPackage}
     });
 
     res.send(data);
