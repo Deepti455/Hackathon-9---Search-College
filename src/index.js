@@ -11,22 +11,19 @@ const {connection} = require('./connector');
 
 // const isNullOrUndefined = val=> val===null || val===undefined;
 app.get("/findColleges",async(req,res)=>{
-    const name= req.query.name;
-    const state=req.query.state;
-    const city= req.query.city;
-    const course=req.query.course;
-    const exam=req.query.exam;
+    const {name,city,state,exam,course}= req.query;
+    
     const minPackage=(req.query.minPackage&&!isNaN(req.query.minPackage)? parseInt(req.query.minPackage): 0);
     const maxFees=(req.query.maxFees&&!isNaN(req.query.maxFees)? parseInt(req.query.maxFees): 0);
     
     const data= await connection.find({
-        name: new RegExp(name,"i"),
-        city: new RegExp(city, "i"),
-        state: new RegExp(city,"i"),
-        exam: new RegExp(exam, "i"),
-        course: new RegExp(course, "i"),
-        maxFees: {$lte: maxFees},
-        minPackage: {$gte: minPackage}
+        "name": new RegExp(name,"i"),
+        "city": new RegExp(city, "i"),
+        "state": new RegExp(state,"i"),
+        "exam": new RegExp(exam, "i"),
+        "course": new RegExp(course, "i"),
+        "maxFees": {$lte: maxFees},
+        "minPackage": {$gte: minPackage}
     });
 
     res.send(data);
